@@ -36,7 +36,19 @@ GPFSFS=$2
 MOUNT=`which mount 2>/dev/null`
 UMOUNT=`which umount 2>/dev/null`
 
+function mforge_ready {
+   MOUNTED=0
+   while [ ${MOUNTED} -eq 0 ] ; do
+      if [[ -f "/mforge/.MOUNTED" ]] ; then
+         MOUNTED=1
+      else
+         sleep 1
+      fi
+   done
+}
+
 function mount_mforge {
+   mforge_ready
    ${MOUNT} --bind /mforge/esx /export/esx
 }
 
